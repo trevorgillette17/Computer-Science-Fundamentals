@@ -14,35 +14,36 @@ e) What if Ava wants to allow a friend, "Melissa", to cut in line in front of he
 f) If Patrick wants to leave the line, how would you delete him from the array?
 
 
-a) var arr = ["Vivian", "Ava", "Josh", "Patrick", "Mike"];
+a) let line  = ["Vivian", "Ava", "Josh", "Patrick", "Mike"];
 
-b)  arr.push("Mary");
-
-c) for(var i = 0; i < arr.length; i++){
-     if (arr[i] === "Josh"){
-       console.log (i);
-     }
-   }
-
-d) for(var i = 0; i < arr.length; i++){
-     if (arr.includes('Emily')){
-       console.log ('Found!');
-     } else {
-       console.log('Not here.')
-     }
+b) function newPerson (person) {
+    line.push(person);
 }
 
-e)  var arr = ["Vivian", "Ava", "Josh", "Patrick", "Mike","Mary"];
-    arr.splice(1,0,'Melissa');
-   console.log(arr)
+c) function findPerson (person) {
+console.log (line.indexOf(person));
+}
 
-f) var arr = ["Vivian", "Ava", "Josh", "Patrick", "Mike","Mary"];
-    arr.splice(3,1);
-   console.log(arr)
+d) function findPerson (person) {
+    let linePosition = line.indexOf(person;)
+        if (linePosition !== -1){
+            console.log(linePosition);
+        }else{
+            console.log((person) + " not found")
+        }
+}
+
+e)  function cutInLine (personInLine, newPerson){
+    line.splice(line.indexOf(personInLine), 0, newPerson);
+}
+
+f) function leaveLine (person) {
+    line.splice(line.indexOf(person), 1);
+}
 
 2.  Provide another real-world example that you can model using a data structure.
 
-A: I would say you could use a modelling structure with maybe a hotel checking in customers
+A: I would say you could use a modelling structure with maybe a hotel checking in customers. Such as when a customer checks in to hotel they get added to a list and when they checkout they get removed.
 
 3. How would your data structure allow developers to access and manipulate the data?
 
