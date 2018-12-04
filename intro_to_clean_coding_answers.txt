@@ -2,7 +2,7 @@ QUESTIONS
 
 1. In your own words, explain what clean code is and why it is important.
 
-A: Clean code is easier for us and others to read and uses as little code as possible in an effort to not repeat the same line of code more than once. This is important because it can prevent errors, make it easier to debug, and increase efficiency.
+A: Clean code is easier for us and others to read and uses as little code as possible in an effort to not repeat the same line of code more than once, well organized, and not complicated. Variables and functions should be named and be clear as to what they do based on their name. This is important because it can prevent errors, make it easier to debug, and increase efficiency.
 
 2. Read this article about Toyota and their use of bad code. Although you may not yet understand all of the topics discussed, think about another commonly used object that relies on computers and explain what would happen if the code was not created to an acceptable standard.
 
@@ -61,13 +61,20 @@ FUNCTION checkOutCustomer(subTotal, discountRate, paymentType)
    END IF
 END FUNCTION
 
-A: FUNCTION checkOutCustomer(subTotal, discountRate, paymentType) //declare function that takes in subTotal, discountRate and paymentType
-   IF paymentType = 'CASH' THEN //if cash
-       PRINT "Change due: " + amount - subTotal * discountRate + (subTotal * tax) // calculate change due
-   ELSE IF paymentType = 'CREDIT CARD' THEN //if cc
-       CALL getPayment RETURNING amount
-       PRINT "Your credit card has been charged: " + subTotal * discountRate + (subTotal * tax) //calculate amout being charged
-   END IF
+A: FUNCTION calculateTotal(subTotal, discountRate, tax)
+  PRINT subTotal * discountRate + (subTotal * tax)
+END FUNCTION
+
+FUNCTION checkOutCustomer(subTotal, discountRate, paymentType)
+  SET totalOwed to calculateTotal(subTotal, discountRate, tax)
+  PRINT "Your total due is: " + totalOwed
+  IF paymentType = 'CASH' THEN
+    CALL getPayment RETURNING amount
+    PRINT "Change due: " + amount - totalOwed
+  ELSE IF paymentType = 'CREDIT CARD' THEN
+    CALL getPayment RETURNING amount
+    PRINT "Your credit card has been charged: " + totalOwed
+  END IF
 END FUNCTION
 
 b. The following function checks out a book if there are no issues with the guest's account.
@@ -87,10 +94,10 @@ FUNCTION checkoutBook(book, guest)
 END FUNCTION
 
 A: FUNCTION checkoutBook(book, guest)
- IF guest.accountActive AND NOT guest.hasOverdueBooks AND guest.outstandingFees = 0 THEN // check to make sure account is active and does not have overdue books or fees
-	 APPEND book to guest.books //if true then add book to guests account
-         SET book.status to "Checked Out" //change book status as checked out
-         PRINT "Your books have been issued." //Confirm
+ IF guest.accountActive AND NOT guest.hasOverdueBooks AND guest.outstandingFees = 0 THEN
+	 APPEND book to guest.books
+         SET book.status to "Checked Out"
+         PRINT "Your books have been issued."
  ELSE
 	PRINT "Unable to check out book." //if guest does not meet requirements, do not check book to guest
  END IF
@@ -132,46 +139,81 @@ CLASS BankAccount
 
 END
 
-A: FUNCTION checkStatusAndOffer //declare function
-	IF customer.hasCheckingAccount AND customer.hasCreditCard THEN // if cust has checking and cc
-	  print balance //show balance
-	ELSE if customer.hasCheckingAccount AND NOT customer.hasCreditCard THEN //if checking and no cc
-	CALL offerCreditCard //offer cc
-	ELSE CALL offerCheckingAccount AND offerCreditCard //else offer checking and cc
-FUNCTION deposit(amount) //declare function for depositing that takes in an amount as a parameter
-    SET balance to balance + amount //set balance by adding current balance and amount
- END FUNCTION
+A: FUNCTION displayBalance
+  PRINT balance
+END FUNCTION
 
- FUNCTION withdraw(amount) //declare function that takes in an amount to withdraw
-     IF balance > amount THEN //if amount  is greater than balance
-       SET balance to balance - amount //sub amount from balalance
-     END
- END FUNCTION
+FUNCTION deposit(amount)
+  SET balance to balance + amount
+END FUNCTION
+
+FUNCTION withdraw(amount)
+  IF balance > amount THEN
+    SET balance to balance - amount
+  END
+END FUNCTION
+
+FUNCTION creditCardOffer
+  IF NOT(customer.hasCreditCard) THEN
+    CALL offerCreditCard
+  END
+END FUNCTION
+
+FUNCTION checkStatus
+  IF NOT(customer.hasCheckingAccount) THEN
+    CALL offerCheckingAccount
+  END
+END FUNCTION
+
+CLASS BankAccount
+
+  displayBalance()
+
+  deposit(amount)
+
+  withdraw(amount)
+
+  creditCardOffer()
+
+  checkStatus()
+
+ ....
+ ....
+ ....
+
+END
 
  Programming Questions
 You may do the following problems in any language of your choice. Use the clean code principles taught in this section while writing the code.
 
 6. SQUARE Given an array of integers, find out whether the sum of the integers is a perfect square. If it is a perfect square, return the square root, otherwise return the sum.
 
-A: function square(arr) { //declare function that takes array
+A: function square(arr) {
 	let sum = 0; //declare variable that starts at 0
-   for (var i = 0; i < arr.length; i++){ //loop through array until it ends
-	sum += arr[i]; //add each value of the array to sum
+   for (var i = 0; i < arr.length; i++){
+	sum += arr[i];
       }
-   if (sum > 0 && Math.sqrt(sum) % 1 === 0){ //if it can be squared
-	return Math.sqrt(sum); //return the square root
-   } else { //otherwise
-	return sum; //return the sum
+   if (sum > 0 && Math.sqrt(sum) % 1 === 0){
+	return Math.sqrt(sum);
+   } else {
+	return sum;
 }
 
 7. Duplicate Given an array of integers, find out whether the array contains any duplicate elements. The function should return true if any value appears at least twice in the array, and false if every element is distinct.
 
 A:
-function duplicate(arr) { //declare function that takes in array
-for (i = 0; i < arr.length; i++){ //loop through the array until it ends
-	for (j = i +1; j < arr.length; j++){ // loop through again
-	  if ( [i] = [j]){ //if same value appears more than once
-		return true;
-		} else { //if it doesnt
-		return false;
-		}
+function findDuplicates(array) {
+  let duplicateArray = [];
+  array.forEach((element, index) => {
+    if (array.indexOf(element, index + 1) > -1) {
+      if (duplicateArray.indexOf(element) === -1) {
+        duplicateArray.push(element);
+      }
+    }
+  });
+  if(duplicateArray.length > 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
