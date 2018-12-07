@@ -1,0 +1,177 @@
+#### Questions
+
+> What are some pros and cons of using linked lists instead of arrays?
+
+A:
+
+Pros :
+
+* Uses less space
+* Dynamically allocated so the number of nodes can be increased or decreased
+* Multiple data types can be used as elements
+
+Cons :
+
+* Can't be indexed so you have to start at the beginning when looking for a specific element
+* May take awhile to find an element because each node that makes up a linked list is stored in a different place in physical memory
+
+> Come up with a real world example of a linked list.
+
+A: A real world example of a linked list could be a train that has various cars in order of what they contain based on the stops they have to make. So when the train makes a stop, it can detach what needs to be unloaded at that stop and everything else moves on to the next stop. Its easier to detach the end than it would be the middle and easier than detaching a few cars in one spot and a few more in another spot but its possible to add/remove cars at any point in the train.
+
+Programming Questions
+You may program the following questions in any language of your choice (JavaScript, Ruby, etc.).
+
+Before beginning to code, write out a plan explaining how to solve the question.
+
+> The linked list `push` function should take a value, create a node, and add it to the end of a list. Below is pseudocode for a `push` function for a singly linked list. However, there is something wrong with it. Submit both an explanation of the bug and a functional implementation of the method.
+
+```
+FUNCTION push(element)
+CREATE node
+SET node.value TO element
+SET node.next TO null
+
+IF the head node does not exist
+ THEN SET head to node
+ELSE
+ SET current to head
+ SET current.next to node
+END IF
+END FUNCTION
+```
+A: The original pseudocode says if a head exists that the `push` function would put the new node right behind the head node and not at the end of the list. If there is not a head node we need to create one and after that the node should be placed at the end of the linked list.
+
+Correct Psuedocode:
+
+```
+FUNCTION push(element)
+CREATE node
+SET node.value TO element
+SET node.next TO null
+
+IF the head node does not exist
+ THEN SET head to node
+ELSE
+ SET current to this.head
+  WHILE (current.next) {
+ SET current to current.next
+    }
+
+ SET current.next to node;
+END IF
+END FUNCTION
+```
+
+Functional Implementation:
+
+```
+push(element) {
+    var node = new Node(element);
+    var current;
+
+    if (this.head == null) {
+      this.head = node;
+    } else {
+      current = this.head;
+
+      while (current.next) {
+        current = current.next;
+      }
+
+      current.next = node;
+    }
+
+  }
+
+ ```
+
+> Given an unsorted singly linked list, remove all duplicates from the linked list.
+Example
+Input: `a -> c -> d -> d -> a`
+Output: `a -> c -> d`
+
+A:
+To remove duplicates we would loop over each node starting at the head comparing it to the next and delete it if more than one is found
+
+```
+function LinkedList() {
+	this.insertNode = function(value) {
+		let node = {
+			data: value,
+			next: null,
+		};
+
+		if (!this.head) {
+			this.head = node;
+		} else {
+			let current = this.head;
+			while (current.next) {
+				current = current.next;
+			}
+			current.next = node;
+		}
+	};
+
+	this.removeDuplicates = function() {
+		// Empty or a single element Linked List
+		if (!this.head || !this.head.next) {
+			console.log('No duplicates.  Empty or single item list');
+			return;
+		}
+
+		let currentNode;
+		let next;
+		let nodes = {};
+
+		currentNode = this.head;
+		next = currentNode.next;
+		nodes[currentNode.data] = true;
+
+		while (next) {
+			let data = next.data;
+			if (nodes[data]) {
+				currentNode.next = next.next;
+			} else {
+				nodes[data] = true;
+				currentNode = next;
+			}
+			next = next.next;
+		}
+	};
+}
+
+```
+> Given an unsorted singly linked list, reverse it.
+Example
+Input: `a -> b -> c -> d`
+Output: `d -> c -> b -> a`
+
+A: To reverse the unsorted singly linked list I would start by creating a temporary array that will hold the nodes. The nodes will be popped off one at a time to the temporary array and then placed into the linked list in reverse order
+
+```
+function reverseList(list) {
+  //Check for empty or single item list
+	if (!list.head || !list.head.next) return list;
+
+	let nodes = [];
+	let current = list.head;
+	while (current) {
+		nodes.push(current);
+		current = current.next;
+	}
+
+	let reversedList = new LinkedList();
+	reversedList.head = nodes.pop();
+  current = reversedList.head;
+
+	let node = nodes.pop();
+	while (node) {
+		node.next = null;
+		current.next = node;
+		current = current.next;
+		node = nodes.pop();
+	}
+	return reversedList;
+}
+```
