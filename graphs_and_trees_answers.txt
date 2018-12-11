@@ -1,0 +1,149 @@
+####Questions
+
+> What is a binary tree and what makes it unique to other trees?
+
+A: A binary tree is a data structure that goes in 2 directions, left and right, and each direction includes child nodes. Binary trees are unique because the order of the left nodes are smaller than the root and the right ones are greater.
+
+>  What is a heuristic?
+
+A: A Heuristic is an algorithmic guess that estimates a way to solve a complex problem faster potentially sacrificing accuracy
+
+>  What is another problem besides the shortest-path problem that requires the use of heuristics?
+
+A: I think we could use heuristics in catching a baseball. We could try to calculate the speed, height, how fast the wind is blowing in a certain direction or we could use a heuristic guess that could, at the very least, get us close
+
+>  What is the difference between a depth-first search and a breadth-first search?
+
+* BFS starts searching nodes level by level starting from the root node and checks its children until all nodes are processed or it find the node its looking for
+
+* DFS checks all nodes from the leftmost path from the root to the leaf, then jumps up and check right node and so on.
+
+> Explain in your own words what an undirected, a-cyclic, unweighted graph is.
+
+* Unidirected graph has edges with no specific direction and no starting or stopping point
+* A-cyclic graph does not loop and has an eventual end
+* Unweighted graph, unlike weighted graphs, does not assign the cost of travel between nodes
+
+> What kind of graph is a binary search tree?
+
+A: A binary search tree is a directed, cyclic and unweighted graph
+
+
+####Programming Questions
+
+For the following questions, describe in words how you could solve the problem and then do so. Use the depiction of the Binary Search Tree to refer to the examples.
+
+>  Given a Binary Search Tree and a value, write a function that checks to see whether the value exists within the tree.
+
+	Example: The value 10 exists in the tree. The value 23 does not exist in the tree.
+
+A: I will start from the root and check if nodes are less than root we put to the left and the oposite to the right until we can find the value.
+
+```
+function Node(val){
+  this.value = val;
+  this.left = null;
+  this.right = null;
+}
+function BinarySearchTree(){
+  this.root = null;
+}
+    BinarySearchTree.prototype.push = function(val){
+   var root = this.root;
+
+   if(!root){
+      this.root = new Node(val);
+      return;
+   }
+
+   var currentNode = root;
+   var newNode = new Node(val);
+
+   while(currentNode){
+      if(val < currentNode.value){
+          if(!currentNode.left){
+             currentNode.left = newNode;
+             break;
+          }
+          else{
+             currentNode = currentNode.left;
+        }
+     }
+     else{
+         if(!currentNode.right){
+            currentNode.right = newNode;
+            break;
+         }
+         else{
+            currentNode = currentNode.right;
+         }
+     }
+  }
+
+}
+BinarySearchTree.prototype.findVal = function(val){
+
+ let currentNode = this.root;
+   if(val < currentNode.value){
+     val = currentNode.left.value;
+     console.log("found at left")
+     return currentNode.left;
+   } else if(val > currentNode.value){
+     val = currentNode.right.value;
+     console.log("found at right")
+     return currentNode.right;
+   }  else if( val === currentNode.value){
+     val = currentNode.value;
+     console.log('found');
+     return currentNode;
+   } else {
+     console.log('notfound');
+     return undefined;
+   }
+ };
+
+
+var bst = new BinarySearchTree();
+bst.push(3);
+bst.push(2);
+bst.push(4);
+bst.push(1);
+bst.push(5);
+console.log(bst)
+bst.findVal(7);
+```
+
+> Given a Binary Search Tree and two nodes, n1 and n2, write a function that finds the distance between the two nodes.
+
+        Example: The distance between the nodes 4 and 10 is 4. The distance between the nodes 8 and 10 is 1. The distance between the nodes 1 and 14 is 4.
+
+> We will start from the result (as n1) that we found above and we move along the route till we reach the n2
+
+```
+	function findDistance(root, n1, n2){
+  if (root === null || n1 === n2){
+    return 0;
+  }
+  distance.left = findDistance(root.left, n1, n2);
+  distance.right = findDistance(root.right, n1, n2);
+
+  if (distance.left > 0 && distance.right > 0){
+    return distance.left + distance.right;
+  }
+  if (distance.left > 0 && distance.right > 0){
+    return distance.left;
+  }
+  if (distance.right > 0 && root === n1 || n2){
+    return distance.right;
+  }
+  if (distance.left === 0 && distance.right === 0){
+    if(root !== n1 || n2){
+      return 0;
+    }
+    if (root == n1 || n2){
+      return 1;
+    }
+    } else {
+      return max(distance.left, distance.right) + 1;
+    }
+```
