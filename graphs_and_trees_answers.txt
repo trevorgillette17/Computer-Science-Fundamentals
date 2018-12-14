@@ -26,8 +26,7 @@ A: I think we could use heuristics in catching a baseball. We could try to calcu
 
 > What kind of graph is a binary search tree?
 
-A: A binary search tree is a directed, cyclic and unweighted graph
-
+A: A binary search tree is a directed, a-cyclic and unweighted graph
 
 ####Programming Questions
 
@@ -40,47 +39,65 @@ For the following questions, describe in words how you could solve the problem a
 A: I will start from the root and check if nodes are less than root we put to the left and the oposite to the right until we can find the value.
 
 ```
-function Node(val){
+function Node(val) {
   this.value = val;
   this.left = null;
   this.right = null;
 }
-function BinarySearchTree(){
+
+function BinarySearchTree() {
   this.root = null;
 }
-    BinarySearchTree.prototype.push = function(val){
-   var root = this.root;
 
-   if(!root){
-      this.root = new Node(val);
-      return;
-   }
+BinarySearchTree.prototype.push = function(val) {
+  var root = this.root;
 
-   var currentNode = root;
-   var newNode = new Node(val);
-
-   while(currentNode){
-      if(val < currentNode.value){
-          if(!currentNode.left){
-             currentNode.left = newNode;
-             break;
-          }
-          else{
-             currentNode = currentNode.left;
-        }
-     }
-     else{
-         if(!currentNode.right){
-            currentNode.right = newNode;
-            break;
-         }
-         else{
-            currentNode = currentNode.right;
-         }
-     }
+  if (!root) {
+    this.root = new Node(val);
+    return;
   }
 
+  var currentNode = root;
+  var newNode = new Node(val);
+
+  while (currentNode) {
+    if (val < currentNode.value) {
+      if (!currentNode.left) {
+        currentNode.left = newNode;
+        break;
+      } else {
+        currentNode = currentNode.left;
+      }
+    } else {
+      if (!currentNode.right) {
+        currentNode.right = newNode;
+        break;
+      } else {
+        currentNode = currentNode.right;
+      }
+    }
+  }
+};
+
+BinarySearchTree.prototype.getRootNode = function()
+{
+    return this.root;
 }
+
+// search for a node with given data
+BinarySearchTree.prototype.searchResult = function(rootNode, val) {
+  if (!rootNode) {
+    return("Value " + val + " does not exist in this tree.");
+  }
+  if (val < rootNode.value) {
+    return this.searchResult(rootNode.left, val);
+  } else if (val > rootNode.value) {
+    return this.searchResult(rootNode.right, val);
+  } else {
+    return("Value " + val + " exists in this tree.");
+  }
+}
+
 BinarySearchTree.prototype.findVal = function(val){
 
  let currentNode = this.root;
@@ -91,16 +108,7 @@ BinarySearchTree.prototype.findVal = function(val){
    } else if(val > currentNode.value){
      val = currentNode.right.value;
      console.log("found at right")
-     return currentNode.right;
-   }  else if( val === currentNode.value){
-     val = currentNode.value;
-     console.log('found');
-     return currentNode;
-   } else {
-     console.log('notfound');
-     return undefined;
-   }
- };
+     return currentNo
 
 
 var bst = new BinarySearchTree();
