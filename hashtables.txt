@@ -91,7 +91,6 @@ let HashTable = function() {
      }
    }
  };
-}
 
 var customers = new HashTable();
 customers.add('123-456-7890', 'Trevor', '1434 Lillian');
@@ -113,24 +112,15 @@ var hashTable = function(){
   var storage = [];
   var storageLimit = 40;
 
- this.add = function(itemId, itemName, quantity) {
-    let index = hash(itemId, storageLimit);
+ this.add = function(itemName, quantity) {
+    let index = hash(itemName);
     if (storage[index] === undefined) {
-      storage[index] = [[itemId, itemName, quantity]];
+      storage[index] = [[itemName, quantity]];
     } else {
-      let inserted = false;
-      for (let i = 0; i < storage[index].length; i++) {
-        if (storage[index][i][0] === itemId) {
-          storage[index][i][1] = itemName;
-          storage[index][i][2] = quantity;
-          inserted = true;
-        }
-      }
-      if (inserted === false) {
-        storage[index].push([itemId, itemName, quantity]);
-      }
+      this.storage.add[itemName, quantity];
     }
-  };
+ }
+
 
   this.lookup = function(itemId) {
     let index = hash(itemId, storageLimit);
