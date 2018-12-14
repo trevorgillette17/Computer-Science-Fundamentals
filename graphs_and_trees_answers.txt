@@ -98,27 +98,20 @@ BinarySearchTree.prototype.searchResult = function(rootNode, val) {
   }
 }
 
-BinarySearchTree.prototype.findVal = function(val){
+var binaryTree = new BinarySearchTree();
+binaryTree.push(1);
+binaryTree.push(10);
+binaryTree.push(250);
+binaryTree.push(90);
+binaryTree.push(11);
+binaryTree.push(19);
+binaryTree.push(36);
+binaryTree.push(12);
+binaryTree.push(20);
+binaryTree.push(41);
 
- let currentNode = this.root;
-   if(val < currentNode.value){
-     val = currentNode.left.value;
-     console.log("found at left")
-     return currentNode.left;
-   } else if(val > currentNode.value){
-     val = currentNode.right.value;
-     console.log("found at right")
-     return currentNo
-
-
-var bst = new BinarySearchTree();
-bst.push(3);
-bst.push(2);
-bst.push(4);
-bst.push(1);
-bst.push(5);
-console.log(bst)
-bst.findVal(7);
+console.log(binaryTree.searchResult(binaryTree.root, 42)) //Does not exist
+console.log(binaryTree.searchResult(binaryTree.root, 41)) //Exists
 ```
 
 > Given a Binary Search Tree and two nodes, n1 and n2, write a function that finds the distance between the two nodes.
