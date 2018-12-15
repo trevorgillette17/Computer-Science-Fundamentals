@@ -1,0 +1,40 @@
+Questions
+
+> Using proper pseudo-code, describe the following primitive algorithms:
+
+
+* Making coffee;
+
+A:
+FUNCTION makeCoffee
+ IF coffee filter is FALSE
+  ADD FILTER
+ ELSE add coffee grounds to filter
+  UNTIL desired amount has been met
+ END IF
+  TURN ON coffee machine
+ WHILE coffee is not brewed
+  keep brewing
+ END WHILE
+END FUNCTION
+
+* Washing dishes;
+
+A:
+FUNCTION washDishes
+ IF sink has water is FALSE
+  ADD water
+ END IF
+ ADD soap to water
+
+* A choice of your own.
+
+A:
+
+> As with the knot algorithm, there may be more than one way to solve the problem. It is essential to try to pick the best algorithm for a situation. Name three companies who created an algorithm that made them successful, e.g., Google's search algorithm. It doesn't need to be a tech example (such as a recipe or manufacturing a product). Google's algorithm produces more relevant results than other search engines; what about each of your cases make them stand out?
+
+A:
+
+> Hypothesize about what constitutes an efficient algorithm versus an inefficient algorithm.
+
+A:

@@ -1,22 +1,22 @@
 #### Questions
 
-> What is a hash table?
+1. What is a hash table?
 
 A: Hash tables are a type of data structure that store values in keys which are used to reference the values when that specific key is referenced
 
-> What is hashing?
+2. What is hashing?
 
 A: Hashing is the process of converting a string to a numerical index
 
-> How does a hash table store data?
+3. How does a hash table store data?
 
 A: A hash table stores data by separating each object with a unique ID
 
-> How are hash tables and objects different?
+4.How are hash tables and objects different?
 
 A: Hash tables and objects are different because
 
-> Determine whether you would use a hash table or an object to store each of the following pieces of data:
+5. Determine whether you would use a hash table or an object to store each of the following pieces of data:
  * A list of pets and their unique names.
 
 A: Hash table
@@ -37,10 +37,10 @@ A: Hash table
 
 A: Object
 
-> Build a system that allows a sales associate to enter a customer's name, address, and phone number into the system and look up customers using their phone numbers. Store this information in a     hash table.
+> Build a system that allows a sales associate to enter a customer's name, address, and phone number into the system and look up customers using their phone numbers. Store this information in a    hash table.
 
 A:
- ```
+
 var hash = (string, max) => {
   var hash = 0;
   for (var i =0; i <= string.length; i++){
@@ -95,58 +95,144 @@ let HashTable = function() {
 var customers = new HashTable();
 customers.add('123-456-7890', 'Trevor', '1434 Lillian');
 console.log(customers.lookup('123-456-7890'));
-```
+
 > Build a system that allows a store owner to track their store's inventory using a hash table for storage.
 
 A:
-```
-var hash = function (string, max) {
-  var hash = 0;
-  for (var i = 0; i <string.length; i++){
-    hash += string.charCodeAt(i);
-  }
-  return hash % max;
-};
+class HashTable {
+  constructor(items){
+    this.hashTableSize = 100;
+    this.storage = [];
+  };
 
-var hashTable = function(){
-  var storage = [];
-  var storageLimit = 40;
-
- this.add = function(itemName, quantity) {
-    let index = hash(itemName);
-    if (storage[index] === undefined) {
-      storage[index] = [[itemName, quantity]];
-    } else {
-      this.storage.add[itemName, quantity];
+  hash(key){
+    let hash = 0;
+    for(let i = 0; i < key.length; i++){
+      hash += key.charCodeAt(i);
     }
- }
+    return hash % this.hashTableSize;
+  };
 
-
-  this.lookup = function(itemId) {
-    let index = hash(itemId, storageLimit);
-    if (storage[index] === undefined) {
-      return "Inventory list is empty"
+  add(key, value){
+    let index = this.hash(key);
+    if(this.storage[index] === undefined){
+      this.storage[index] = [[key, value]];
     } else {
-      for (i = 0 ; i < storage[index].length; i++) {
-        if(storage[index][i][0] === itemId) {
-          return "Item#: " + storage[index][i][0] + ", " + storage[index][i][1] + ", Qty:" + storage[index][i][2];
-        } else {
-          return "Item not found"
+      let duplicate = false;
+      for(let i = 0; i < this.storage[index].length; i++){
+        if(this.storage[index][i][0] === key){
+          this.storage[index][i][1] = value;
+          duplicate = true;
+        }
+      }
+      if(duplicate === false){
+        this.storage[index].push([key, value]);
+      }
+    }
+  };
+
+  getItems(key){
+    let index = this.hash(key);
+    if(this.storage[index] === undefined){
+      return false;
+    } else {
+      for(let i = 0; i < this.storage[index].length; i++){
+        if(this.storage[index][i][0] === key){
+          return this.storage[index][i][1];
         }
       }
     }
-  }
+  };
+
+  hasItem(key){
+    return this.getItems(key) !== false;
+  };
+
+  remove(key){
+    let index = this.hash(key);
+    if(this.storage[index].length === 1 && this.storage[index][0][0] === key){
+      delete this.storage[index];
+    } else {
+      for(let i = 0; i < this.storage[index]; i++){
+        if(this.storage[index][i][0] === key){
+          delete this.storage[index][i];
+        }
+      }
+    }
+  };
+
+  print(){
+    return this.storage.filter(items => items !== undefined);
+  };
 };
 
-var inventory = new HashTable();
-inventory.add('2', 'lollipop','20');
-console.log(inventory.lookup(2));
-```
+class Inventory {
+  constructor(items){
+    this.inventory = new HashTable(items);
+  }
+
+  addItem({item, amount}){
+    let number = this.inventory.hasItem(item) ?      this.inventory.getItems(item) + amount : amount;
+    console.log(amount)
+    this.inventory.add(item, number);
+  }
+
+  removeItem({item, amount}){
+    if(this.inventory.hasItem(item)){
+      if(this.inventory.getItems(item) - amount >= 0){
+        let number = this.inventory.getItems(item) - amount;
+        this.inventory.add(item, number);
+      } else {
+      console.log("not enough " + item + " in stock");
+      }
+    } else {
+    console.log("Item not in stock")
+    }
+  }
+
+  getInventory(){
+    return this.inventory.print();
+  }
+}
+
+let inventory = new Inventory;
+
+inventory.addItem({
+  item: 'footballs',
+  amount: 30
+});
+
+inventory.addItem({
+  item: 'soccer balls',
+  amount: 4
+});
+
+inventory.addItem({
+  item: 'golf balls',
+  amount: 11
+});
+
+inventory.addItem({
+  item: 'tennis balls',
+  amount: 20
+});
+
+inventory.removeItem({
+  item: 'basketballs',
+  amount: 5
+});
+
+inventory.removeItem({
+  amount: 'soccer balls',
+  item: 2
+});
+
+console.log(inventory.getInventory())
 
 > Build a system that allows digital copies of newspapers to be entered and searched by publisher and publication date. Use hash tables to store the necessary data.
 
 A:
-```
+
 function hash(key, size) {
   let hash = 0;
   for (let i = 0; i < key.length; i++) {
@@ -223,4 +309,4 @@ newspaperDates.add("NY Times", "2010");
 console.log(newspaper.lookupByPublisher("USA Today"));
 console.log(newspaper.lookupByPublisher("New York Daily News"));
 console.log(newspaperDates.lookupByDate("2001"));
-```
+
