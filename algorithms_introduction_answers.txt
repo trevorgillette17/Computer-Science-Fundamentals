@@ -21,20 +21,40 @@ END FUNCTION
 * Washing dishes;
 
 A:
+
 FUNCTION washDishes
- IF sink has water is FALSE
-  ADD water
- END IF
- ADD soap to water
+GET soap
+GET sponge
+INIT soapySponge
+SET isTapOn = true
+WHILE (plates != 0)
+	USE soapySponge to wash plate
+END WHILE
+SET isTapOn = false
+END FUNCTION
 
 * A choice of your own.
 
 A:
+FUNCTION brushTeeth
+GET toothbrush
+GET toothpaste
+SET toothbrushReady = toothbrush + toothpaste
+SET timer to 2 minutes
+WHILE (timer > 0)
+	USE toothbrushReady to Brush teeth
+END WHILE
+ClEAN toothbrushReady
+END FUNCTION
+
 
 > As with the knot algorithm, there may be more than one way to solve the problem. It is essential to try to pick the best algorithm for a situation. Name three companies who created an algorithm that made them successful, e.g., Google's search algorithm. It doesn't need to be a tech example (such as a recipe or manufacturing a product). Google's algorithm produces more relevant results than other search engines; what about each of your cases make them stand out?
 
 A:
+* Netflix - uses an algorithm to suggest new shows to its subscribers based on what they have watched in the past
+* Facebook - uses an algorithm to help target ads to people of a certain demographic, and user activity
+* Match.com - uses an algorithm to suggest possible matches based on preferences and activity
 
 > Hypothesize about what constitutes an efficient algorithm versus an inefficient algorithm.
 
-A:
+A: To make an Algorithm effective I would think it would need to produce the best results, with the least amount of resources, in the shortest amount of time. Opposed to an inefficient algorithm that may take longer, use more resources or not produce as good of results
